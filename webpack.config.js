@@ -3,15 +3,10 @@ const webpack = require("webpack");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const paths = {
-  scripts: { src: "src/ts/index.tsx" },
-  dest: "dist",
-};
-
-module.exports = (() => ({
-  entry: { main: path.resolve(__dirname, paths.scripts.src) },
+module.exports = {
+  entry: "./src/ts/index.tsx",
   output: {
-    path: path.resolve(__dirname, paths.dest),
+    path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     publicPath: "/",
   },
@@ -20,12 +15,8 @@ module.exports = (() => ({
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
-      {
         test: /\.(ts|tsx)$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "ts-loader",
@@ -65,15 +56,7 @@ module.exports = (() => ({
     new ReactRefreshWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.html"),
-      //favicon: path.resolve(__dirname, "src", "favicon.ico"),
       inject: true,
     }),
   ],
-  devServer: {
-    static: { directory: path.join(__dirname, paths.dest) },
-    compress: true,
-    port: 3000,
-    hot: true,
-    historyApiFallback: true,
-  },
-}))();
+};

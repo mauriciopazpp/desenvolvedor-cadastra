@@ -1,10 +1,2 @@
-// @use "reset";
-
-body {
-  background: blue;
-  color: white;
-}
-
-h1 {
-  font-size: 2rem;
-}
+@use "reset";
+@use "theme";

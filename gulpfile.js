@@ -16,6 +16,7 @@ const paths = {
   },
   styles: {
     src: "src/scss/main.scss",
+    watch: "src/scss/**/*.scss",
     dest: "dist/css",
   },
   img: {
@@ -33,13 +34,16 @@ function server() {
     server: {
       baseDir: paths.dest,
       middleware: [history({})],
+      index: "index.html"
     },
     notify: false,
     open: false,
+    serveStatic: [paths.dest],
     csp: {
       policies: {
         "default-src": "'self'",
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "http://localhost:3000"],
+        "style-src": ["'self'", "'unsafe-inline'"],
         "font-src": ["'self'", "https://fonts.gstatic.com", "data:"],
         "connect-src": ["'self'", "ws://localhost:3000"],
         "img-src": ["'self'", "data:"]
@@ -60,7 +64,6 @@ function styles() {
     .pipe(dest(paths.styles.dest, { sourcemaps: '.' }))
     .pipe(browserSync.stream({ match: '**/*.css' }));
 }
-
 
 function scripts() {
   return new Promise((resolve, reject) => {
@@ -95,6 +98,7 @@ function scripts() {
         })
       );
 
+      browserSync.reload();
       resolve();
     });
   });
@@ -110,8 +114,8 @@ const build = series(clean, parallel(styles, scripts, img));
 const dev = series(build, function startDev(done) {
   server();
   watch(paths.scripts.watch, series(scripts, reloadBrowser));
-  watch(paths.styles.src, styles);
-  watch(paths.img.src, img);
+  watch(paths.styles.watch, series(styles, reloadBrowser));
+  watch(paths.img.src, series(img, reloadBrowser));
   done();
 });
 
