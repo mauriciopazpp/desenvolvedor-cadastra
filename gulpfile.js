@@ -12,8 +12,8 @@ const webpackConfig = require("./webpack.config.js");
 
 const paths = {
   scripts: {
-    src: "src/ts/index.ts",
-    watch: "src/ts/**/*.ts",
+    src: "src/ts/index.tsx",
+    watch: "src/ts/**/*.{ts,tsx}",
   },
   styles: {
     src: "src/scss/main.scss",
@@ -56,7 +56,7 @@ function styles() {
 
 function scripts() {
   return new Promise((resolve) =>
-    webpack(webpackConfig(paths), (err, stats) => {
+    webpack(webpackConfig, (err, stats) => {
       if (err) console.log("Webpack", err);
 
       console.log(

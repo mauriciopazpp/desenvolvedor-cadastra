@@ -1,24 +1,44 @@
 const path = require("path");
 const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-module.exports = (paths) => ({
-  entry: {
-    main: path.resolve(__dirname, paths.scripts.src),
-  },
+const paths = {
+  scripts: { src: "src/ts/index.tsx" },
+  dest: "dist",
+};
+
+module.exports = (() => ({
+  entry: { main: path.resolve(__dirname, paths.scripts.src) },
   output: {
     path: path.resolve(__dirname, paths.dest),
     filename: "bundle.js",
   },
   mode: "development",
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /(node_modules|bower_components)/,
-        include: path.resolve(__dirname, paths.scripts.src),
-        use: "ts-loader",
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
       },
     ],
   },
-  plugins: [],
-});
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
+  plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()],
+  devServer: {
+    static: { directory: path.join(__dirname, paths.dest) },
+    compress: true,
+    port: 3000,
+    hot: true,
+  },
+}))();
