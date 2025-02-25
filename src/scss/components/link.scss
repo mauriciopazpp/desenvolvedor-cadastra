@@ -1,0 +1,11 @@
+@use "theme" as *;
+
+a {
+  color: $color-link;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

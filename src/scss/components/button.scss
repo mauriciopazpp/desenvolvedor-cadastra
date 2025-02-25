@@ -1,0 +1,65 @@
+@use "sass:color";
+@use "theme" as *;
+
+$btn-height: 35px;
+$btn-padding: 40px;
+
+.btn {
+  display: flex;
+  text-transform: uppercase;
+  height: $btn-height;
+  font-weight: 700;
+  font-size: 14px;
+  padding-top: 3px;
+  padding-left: $btn-padding;
+  padding-right: $btn-padding;
+  line-height: 19.07px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &-primary {
+    background: $color-primary;
+    color: $color-white;
+
+    &:hover {
+      background: color.adjust($color-primary, $lightness: -10%);
+    }
+  }
+
+  &-secondary {
+    background: $color-secondary;
+    color: $color-white;
+    border: 1px solid $color-black;
+
+    &:hover {
+      background: color.adjust($color-secondary, $lightness: -10%);
+    }
+  }
+
+  &-terciary {
+    background: $color-terciary;
+    color: $color-gray;
+    border: 1px solid $color-gray;
+    font-weight: $font-weight-normal;
+
+    &:hover {
+      background: color.adjust($color-terciary, $lightness: -10%);
+    }
+  }
+}
+
+.btn-group {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-no-border {
+  border: none;
+}
+
+.btn-width-100 {
+  width: 100%;
+}

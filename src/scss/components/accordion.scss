@@ -1,0 +1,32 @@
+.accordion {
+  border-radius: 4px;
+  margin-bottom: 10px;
+  overflow: hidden;
+
+  .accordion-header {
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+
+    h3 {
+      margin: 0;
+    }
+
+    .arrow {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .accordion-content {
+    padding: 10px;
+  }
+}

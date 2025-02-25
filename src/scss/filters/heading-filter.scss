@@ -1,0 +1,7 @@
+@use "theme" as *;
+
+.heading-filter {
+  font-weight: $font-weight-normal;
+  color: $color-headings;
+  margin-bottom: $margin-bottom-headings;
+}

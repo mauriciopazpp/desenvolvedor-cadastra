@@ -1,0 +1,19 @@
+@use "theme" as *;
+
+.sizes-filter {
+  display: flex;
+  gap: 15px;
+
+  .square {
+    width: 32px;
+    height: 32px;
+    padding: initial;
+
+    > span {
+      font-family: $font-family-base;
+      font-weight: $font-weight-normal;
+      font-size: $font-size-base;
+      color: $color-text;
+    }
+  }
+}

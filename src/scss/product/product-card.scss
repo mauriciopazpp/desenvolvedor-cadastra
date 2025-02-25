@@ -1,0 +1,35 @@
+@use "theme" as *;
+
+.product-card {
+  width: 100%;
+
+  img {
+    width: 100%;
+  }
+
+  .product-name {
+    font-family: $font-family-base;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-base-small;
+    color: $color-black;
+  }
+
+  .product-price {
+    font-family: $font-family-base;
+    text-align: center;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+    color: $color-black;
+  }
+
+  .product-price-split {
+    font-family: $font-family-base;
+    text-align: center;
+    font-weight: $font-weight-normal;
+    font-size: $font-size-base;
+    color: $color-gray;
+    margin-bottom: 10px;
+  }
+}
