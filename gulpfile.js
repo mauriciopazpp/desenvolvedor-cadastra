@@ -1,4 +1,4 @@
-const path = require("path");
+const history = require('connect-history-api-fallback');
 
 const { series, src, dest, parallel, watch } = require("gulp");
 const webpack = require("webpack");
@@ -36,6 +36,7 @@ function server() {
   browserSync.init({
     server: {
       baseDir: "./dist",
+      middleware: [history()],
     },
   });
 }

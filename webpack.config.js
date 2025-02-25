@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const paths = {
   scripts: { src: "src/ts/index.tsx" },
@@ -34,11 +35,18 @@ module.exports = (() => ({
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()],
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new ReactRefreshWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html"),
+    }),
+  ],
   devServer: {
     static: { directory: path.join(__dirname, paths.dest) },
     compress: true,
     port: 3000,
     hot: true,
+    historyApiFallback: true,
   },
 }))();
