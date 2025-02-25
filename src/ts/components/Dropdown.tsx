@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-const Dropdown = () => {
+interface DropdownProps { }
+
+const Dropdown: React.FC<DropdownProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

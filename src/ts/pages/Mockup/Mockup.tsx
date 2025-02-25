@@ -4,21 +4,19 @@ import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Accordion from '../../components/Accordion';
 import ProductCard from '../../components/ProductCard';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Base from '../../layouts/Base';
 
 const handleClick = () => {
   console.log('Botão clicado.');
 };
 
 const Mockup: React.FC = () => {
-  const [isAmareloChecked, setIsAmareloChecked] = useState(false);
+  const [_, setIsAmareloChecked] = useState(false);
   const [isAzulChecked, setIsAzulChecked] = useState(false);
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
 
   return (
-    <div>
-      <Header />
+    <Base>
       <div className="container">
         <div className="mockup-page">
           <br />
@@ -134,8 +132,7 @@ const Mockup: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
+    </Base>
   );
 };
 
