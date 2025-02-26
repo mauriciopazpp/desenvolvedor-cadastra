@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/productsSlice';
 import { RootState, AppDispatch } from '../../store/store';
 import { Product } from '../../Product';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Category: React.FC = () => {
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
@@ -28,6 +28,7 @@ const Category: React.FC = () => {
   const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(fetchProducts(page));
@@ -39,21 +40,26 @@ const Category: React.FC = () => {
       const sizes = Array.from(new Set(allProducts.flatMap(product => product.size).flat())).sort();
       setUniqueColors(colors);
       setSizes(sizes);
-
-      if (selectedColors.length === 0 && selectedSizes.length === 0) {
-        setFilteredProducts(allProducts);
-      } else {
-        const items = allProducts.filter(product => {
-          const colorMatch = selectedColors.length === 0 || selectedColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase());
-          const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(selectedSize => {
-            return product.size.some(productSize => String(productSize).toLowerCase() === String(selectedSize).toLowerCase())
-          });
-          return colorMatch && sizeMatch;
-        });
-        setFilteredProducts(items);
-      }
     }
-  }, [allProducts, selectedColors, selectedSizes]);
+  }, [allProducts]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const colorsFromURL = params.get('colors')?.split(',') || [];
+    const sizesFromURL = params.get('sizes')?.split(',') || [];
+
+    setSelectedColors(colorsFromURL);
+    setSelectedSizes(sizesFromURL);
+
+    if (allProducts.length) {
+      const items = allProducts.filter(product => {
+        const colorMatch = colorsFromURL.length === 0 || colorsFromURL.some(color => product.color.toLowerCase() === color.toLowerCase());
+        const sizeMatch = sizesFromURL.length === 0 || sizesFromURL.some(size => product.size.some(productSize => String(productSize).toLowerCase() === String(size).toLowerCase()));
+        return colorMatch && sizeMatch;
+      });
+      setFilteredProducts(items);
+    }
+  }, [location.search, allProducts]);
 
   const handleColorChange = (color: string) => {
     const newColors = selectedColors.includes(color)
@@ -61,9 +67,15 @@ const Category: React.FC = () => {
       : [...selectedColors, color];
     setSelectedColors(newColors);
 
-    navigate(`?colors=${newColors.join(',')}`);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (newColors.length > 0) {
+      searchParams.set('colors', newColors.join(','));
+    } else {
+      searchParams.delete('colors');
+    }
+    navigate(`?${searchParams.toString()}`);
 
-    if (newColors.length === 0) {
+    if (newColors.length === 0 && selectedSizes.length === 0) {
       setFilteredProducts(allProducts);
     } else {
       const items = allProducts.filter(product =>
@@ -79,9 +91,15 @@ const Category: React.FC = () => {
       : [...selectedSizes, size];
     setSelectedSizes(newSizes);
 
-    navigate(`?sizes=${newSizes.join(',')}`);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (newSizes.length > 0) {
+      searchParams.set('sizes', newSizes.join(','));
+    } else {
+      searchParams.delete('sizes');
+    }
+    navigate(`?${searchParams.toString()}`);
 
-    if (newSizes.length === 0) {
+    if (newSizes.length === 0 && selectedColors.length === 0) {
       setFilteredProducts(allProducts);
     } else {
       const items = allProducts.filter(product =>
