@@ -20,6 +20,10 @@ const Category: React.FC = () => {
   const [page, setPage] = useState(1);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [tempSelectedColors, setTempSelectedColors] = useState<string[]>([]);
+  const [tempSelectedSizes, setTempSelectedSizes] = useState<string[]>([]);
+  const [tempSelectedPriceRanges, setTempSelectedPriceRanges] = useState<string[]>([]);
 
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
@@ -86,49 +90,84 @@ const Category: React.FC = () => {
     }
   }, [location.search, allProducts]);
 
-  const handleColorChange = (color: string) => {
-    const newColors = selectedColors.includes(color)
-      ? selectedColors.filter(c => c !== color)
-      : [...selectedColors, color];
-    setSelectedColors(newColors);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-    const searchParams = new URLSearchParams(window.location.search);
-    if (newColors.length > 0) {
-      searchParams.set('colors', newColors.join(','));
-    } else {
-      searchParams.delete('colors');
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleColorChange = (color: string) => {
+    const newColors = tempSelectedColors.includes(color)
+      ? tempSelectedColors.filter(c => c !== color)
+      : [...tempSelectedColors, color];
+    setTempSelectedColors(newColors);
+
+    if (!isMobile) {
+      applyFilters(newColors, tempSelectedSizes, tempSelectedPriceRanges);
     }
-    navigate(`?${searchParams.toString()}`);
   };
 
   const handleSizeFilter = (size: string) => {
-    const newSizes = selectedSizes.includes(size)
-      ? selectedSizes.filter(s => s !== size)
-      : [...selectedSizes, size];
-    setSelectedSizes(newSizes);
+    const newSizes = tempSelectedSizes.includes(size)
+      ? tempSelectedSizes.filter(s => s !== size)
+      : [...tempSelectedSizes, size];
+    setTempSelectedSizes(newSizes);
 
-    const searchParams = new URLSearchParams(window.location.search);
-    if (newSizes.length > 0) {
-      searchParams.set('sizes', newSizes.join(','));
-    } else {
-      searchParams.delete('sizes');
+    if (!isMobile) {
+      applyFilters(tempSelectedColors, newSizes, tempSelectedPriceRanges);
     }
-    navigate(`?${searchParams.toString()}`);
   };
 
   const handlePriceRangeChange = (range: string) => {
-    const newPriceRanges = selectedPriceRanges.includes(range)
-      ? selectedPriceRanges.filter(r => r !== range)
-      : [...selectedPriceRanges, range];
-    setSelectedPriceRanges(newPriceRanges);
+    const newPriceRanges = tempSelectedPriceRanges.includes(range)
+      ? tempSelectedPriceRanges.filter(r => r !== range)
+      : [...tempSelectedPriceRanges, range];
+    setTempSelectedPriceRanges(newPriceRanges);
 
+    if (!isMobile) {
+      applyFilters(tempSelectedColors, tempSelectedSizes, newPriceRanges);
+    }
+  };
+
+  const applyFilters = (colors: string[], sizes: string[], priceRanges: string[]) => {
     const searchParams = new URLSearchParams(window.location.search);
-    if (newPriceRanges.length > 0) {
-      searchParams.set('price', newPriceRanges.join(','));
+
+    if (colors.length > 0) {
+      searchParams.set('colors', colors.join(','));
+    } else {
+      searchParams.delete('colors');
+    }
+
+    if (sizes.length > 0) {
+      searchParams.set('sizes', sizes.join(','));
+    } else {
+      searchParams.delete('sizes');
+    }
+
+    if (priceRanges.length > 0) {
+      searchParams.set('price', priceRanges.join(','));
     } else {
       searchParams.delete('price');
     }
+
     navigate(`?${searchParams.toString()}`);
+  };
+
+  const handleApplyFilters = () => {
+    applyFilters(tempSelectedColors, tempSelectedSizes, tempSelectedPriceRanges);
+    handleClose();
+  };
+
+  const handleCleanFilters = () => {
+    setSelectedColors([]);
+    setSelectedSizes([]);
+    setSelectedPriceRanges([]);
+    setSortOrder('');
+    navigate('');
+    handleClose();
   };
 
   const handleLoadMore = () => {
@@ -170,7 +209,7 @@ const Category: React.FC = () => {
       searchParams.delete('order');
     }
     navigate(`?${searchParams.toString()}`);
-    handleClose()
+    handleClose();
   };
 
   const visibleProducts = filteredProducts.slice(0, page * 9);
@@ -212,7 +251,7 @@ const Category: React.FC = () => {
                   key={index}
                   id={`checkbox-${index}`}
                   label={color}
-                  checked={selectedColors.includes(color)}
+                  checked={tempSelectedColors.includes(color)}
                   onChange={() => handleColorChange(color)}
                 />
               ))}
@@ -226,7 +265,7 @@ const Category: React.FC = () => {
                   label={size}
                   onClick={() => handleSizeFilter(size)}
                   variant="terciary"
-                  extraClasses={`btn-no-border square ${selectedSizes.includes(size) ? 'active' : ''}`}
+                  extraClasses={`btn-no-border square ${tempSelectedSizes.includes(size) ? 'active' : ''}`}
                 />
               ))}
             </div>
@@ -235,34 +274,40 @@ const Category: React.FC = () => {
             <Checkbox
               id="price-0-50"
               label="0 a 50"
-              checked={selectedPriceRanges.includes('0-50')}
+              checked={tempSelectedPriceRanges.includes('0-50')}
               onChange={() => handlePriceRangeChange('0-50')}
             />
             <Checkbox
               id="price-51-150"
               label="51 a 150"
-              checked={selectedPriceRanges.includes('51-150')}
+              checked={tempSelectedPriceRanges.includes('51-150')}
               onChange={() => handlePriceRangeChange('51-150')}
             />
             <Checkbox
               id="price-151-300"
               label="151 a 300"
-              checked={selectedPriceRanges.includes('151-300')}
+              checked={tempSelectedPriceRanges.includes('151-300')}
               onChange={() => handlePriceRangeChange('151-300')}
             />
             <Checkbox
               id="price-301-500"
               label="301 a 500"
-              checked={selectedPriceRanges.includes('301-500')}
+              checked={tempSelectedPriceRanges.includes('301-500')}
               onChange={() => handlePriceRangeChange('301-500')}
             />
             <Checkbox
               id="price-above-500"
               label="Acima de 500"
-              checked={selectedPriceRanges.includes('above-500')}
+              checked={tempSelectedPriceRanges.includes('above-500')}
               onChange={() => handlePriceRangeChange('above-500')}
             />
           </Accordion>
+          {isMobile && (
+            <div className="btn-group">
+              <Button label="APLICAR" onClick={handleApplyFilters} variant="secondary" extraClasses='btn-no-border' />
+              <Button label="LIMPAR" onClick={handleCleanFilters} variant="terciary" />
+            </div>
+          )}
         </div>
         <div className="product-grid">
           <div className="product-list-page list-type-1">

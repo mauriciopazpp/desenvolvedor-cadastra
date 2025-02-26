@@ -53,7 +53,14 @@ $btn-padding: 40px;
 
 .btn-group {
   display: flex;
-  gap: 5px;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 30px;
+  gap: 15px;
+
+  button {
+    width: 100%;
+  }
 }
 
 .btn-no-border {
