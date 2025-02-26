@@ -17,6 +17,8 @@ const Category: React.FC = () => {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [uniqueColors, setUniqueColors] = useState<string[]>([]);
 
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
+
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
 
@@ -47,16 +49,28 @@ const Category: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const colorsFromURL = params.get('colors')?.split(',') || [];
     const sizesFromURL = params.get('sizes')?.split(',') || [];
+    const priceRangesFromURL = params.get('price')?.split(',') || [];
 
     setSelectedColors(colorsFromURL);
     setSelectedSizes(sizesFromURL);
+    setSelectedPriceRanges(priceRangesFromURL);
 
     if (allProducts.length) {
-      const items = allProducts.filter(product => {
+      let items = allProducts.filter(product => {
         const colorMatch = colorsFromURL.length === 0 || colorsFromURL.some(color => product.color.toLowerCase() === color.toLowerCase());
         const sizeMatch = sizesFromURL.length === 0 || sizesFromURL.some(size => product.size.some(productSize => String(productSize).toLowerCase() === String(size).toLowerCase()));
-        return colorMatch && sizeMatch;
+        let priceMatch = true;
+
+        if (priceRangesFromURL.length > 0) {
+          priceMatch = priceRangesFromURL.some(range => {
+            const [minPrice, maxPrice] = range.split('-').map(Number);
+            return product.price >= minPrice && (maxPrice ? product.price <= maxPrice : product.price > minPrice);
+          });
+        }
+
+        return colorMatch && sizeMatch && priceMatch;
       });
+
       setFilteredProducts(items);
     }
   }, [location.search, allProducts]);
@@ -74,15 +88,6 @@ const Category: React.FC = () => {
       searchParams.delete('colors');
     }
     navigate(`?${searchParams.toString()}`);
-
-    if (newColors.length === 0 && selectedSizes.length === 0) {
-      setFilteredProducts(allProducts);
-    } else {
-      const items = allProducts.filter(product =>
-        newColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase())
-      );
-      setFilteredProducts(items);
-    }
   };
 
   const handleSizeFilter = (size: string) => {
@@ -98,17 +103,21 @@ const Category: React.FC = () => {
       searchParams.delete('sizes');
     }
     navigate(`?${searchParams.toString()}`);
+  };
 
-    if (newSizes.length === 0 && selectedColors.length === 0) {
-      setFilteredProducts(allProducts);
+  const handlePriceRangeChange = (range: string) => {
+    const newPriceRanges = selectedPriceRanges.includes(range)
+      ? selectedPriceRanges.filter(r => r !== range)
+      : [...selectedPriceRanges, range];
+    setSelectedPriceRanges(newPriceRanges);
+
+    const searchParams = new URLSearchParams(window.location.search);
+    if (newPriceRanges.length > 0) {
+      searchParams.set('price', newPriceRanges.join(','));
     } else {
-      const items = allProducts.filter(product =>
-        newSizes.some(selectedSize =>
-          product.size.some(productSize => String(productSize).toLowerCase() === String(selectedSize).toLowerCase())
-        )
-      );
-      setFilteredProducts(items);
+      searchParams.delete('price');
     }
+    navigate(`?${searchParams.toString()}`);
   };
 
   const handleLoadMore = () => {
@@ -199,34 +208,34 @@ const Category: React.FC = () => {
           </Accordion>
           <Accordion title="FAIXA DE PREÇO">
             <Checkbox
-              id="checkbox-3"
-              label="de R$0 até R$50"
-              checked={isBrancoChecked}
-              onChange={setIsBrancoChecked}
+              id="price-0-50"
+              label="0 a 50"
+              checked={selectedPriceRanges.includes('0-50')}
+              onChange={() => handlePriceRangeChange('0-50')}
             />
             <Checkbox
-              id="checkbox-3"
-              label="de R$0 até R$50"
-              checked={isBrancoChecked}
-              onChange={setIsBrancoChecked}
+              id="price-51-150"
+              label="51 a 150"
+              checked={selectedPriceRanges.includes('51-150')}
+              onChange={() => handlePriceRangeChange('51-150')}
             />
             <Checkbox
-              id="checkbox-3"
-              label="de R$0 até R$50"
-              checked={isBrancoChecked}
-              onChange={setIsBrancoChecked}
+              id="price-151-300"
+              label="151 a 300"
+              checked={selectedPriceRanges.includes('151-300')}
+              onChange={() => handlePriceRangeChange('151-300')}
             />
             <Checkbox
-              id="checkbox-3"
-              label="de R$0 até R$50"
-              checked={isBrancoChecked}
-              onChange={setIsBrancoChecked}
+              id="price-301-500"
+              label="301 a 500"
+              checked={selectedPriceRanges.includes('301-500')}
+              onChange={() => handlePriceRangeChange('301-500')}
             />
             <Checkbox
-              id="checkbox-3"
-              label="de R$0 até R$50"
-              checked={isBrancoChecked}
-              onChange={setIsBrancoChecked}
+              id="price-above-500"
+              label="Acima de 500"
+              checked={selectedPriceRanges.includes('above-500')}
+              onChange={() => handlePriceRangeChange('above-500')}
             />
           </Accordion>
         </div>
