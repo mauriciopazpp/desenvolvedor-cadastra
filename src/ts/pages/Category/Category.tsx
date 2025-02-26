@@ -8,16 +8,17 @@ import Dropdown from '../../components/Dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/productsSlice';
 import { RootState, AppDispatch } from '../../store/store';
+import { Product } from '../../Product';
 
 const Category: React.FC = () => {
-  const [_, setIsAmareloChecked] = useState(false);
-  const [isAzulChecked, setIsAzulChecked] = useState(false);
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+  const [sizes, setSizes] = useState<string[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
   const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
@@ -29,16 +30,35 @@ const Category: React.FC = () => {
   useEffect(() => {
     if (allProducts.length) {
       const colors = Array.from(new Set(allProducts.flatMap(product => product.color))).sort();
+      const sizes = Array.from(new Set(allProducts.flatMap(product => product.size))).sort();
       setUniqueColors(colors);
+      setSizes(sizes);
+
+      if (selectedColors.length === 0) {
+        setFilteredProducts(allProducts);
+      } else {
+        const items = allProducts.filter(product =>
+          selectedColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase())
+        );
+        setFilteredProducts(items);
+      }
     }
-  }, [allProducts]);
+  }, [allProducts, selectedColors]);
 
   const handleColorChange = (color: string) => {
-    setSelectedColors(prevColors =>
-      prevColors.includes(color)
-        ? prevColors.filter(c => c !== color)
-        : [...prevColors, color]
-    );
+    const newColors = selectedColors.includes(color)
+      ? selectedColors.filter(c => c !== color)
+      : [...selectedColors, color];
+    setSelectedColors(newColors);
+
+    if (newColors.length === 0) {
+      setFilteredProducts(allProducts);
+    } else {
+      const items = allProducts.filter(product =>
+        newColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase())
+      );
+      setFilteredProducts(items);
+    }
   };
 
   const handleSizeFilter = () => {
@@ -47,8 +67,8 @@ const Category: React.FC = () => {
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
+    dispatch(fetchProducts(page + 1));
   };
-
   const handleFilter = () => {
     if (sidebarElement.current) {
       sidebarElement.current.classList.toggle('opened');
@@ -106,7 +126,7 @@ const Category: React.FC = () => {
           <h6 className='heading-filter'></h6>
           <Accordion title="CORES">
             <div className="checkboxes">
-            {uniqueColors.map((color, index) => (
+              {uniqueColors.map((color, index) => (
                 <Checkbox
                   key={index}
                   id={`checkbox-${index}`}
@@ -119,16 +139,9 @@ const Category: React.FC = () => {
           </Accordion>
           <Accordion title="TAMANHOS">
             <div className="flex sizes-filter">
-              <Button label="P" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="M" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="G" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="GG" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="U" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="36" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="38" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="40" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="36" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
-              <Button label="40" onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
+              {sizes.map((size, index) => (
+                <Button key={index} label={size} onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
+              ))}
             </div>
           </Accordion>
           <Accordion title="FAIXA DE PREÇO">
@@ -167,17 +180,20 @@ const Category: React.FC = () => {
         <div className="product-grid">
           <div className="product-list-page list-type-1">
             {loading ? 'loading...' :
-              products.map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))
+              (filteredProducts.length > 0
+                ? filteredProducts.map((product, index) => (
+                  <ProductCard key={index} product={product} />
+                ))
+                : 'Nenhum produto encontrado.')
             }
           </div>
           <div className="load-more">
-            {products.length < totalCount && (
+            {filteredProducts.length < totalCount && (
               <Button label="Carregar mais" onClick={handleLoadMore} variant="secondary" />
             )}
           </div>
         </div>
+
       </div>
     </Base>
   );
