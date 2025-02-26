@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Dropdown from '../../components/Dropdown';
 import Button from '../../components/Button';
 import Checkbox from '../../components/Checkbox';
 import Accordion from '../../components/Accordion';
@@ -94,9 +93,6 @@ const Mockup: React.FC = () => {
           </div>
         </div>
         <hr />
-        <h1>Dropdown</h1>
-        <Dropdown />
-        <hr />
         <h1>Accordion</h1>
         <Accordion title="FAIXA DE PREÇO">
           <div className="checkboxes">
@@ -123,11 +119,42 @@ const Mockup: React.FC = () => {
         <hr />
         <h1>Product Card</h1>
         <div className="product-list-page list-type-1">
-          <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-          <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-          <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-          <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-          <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
+          <ProductCard
+            product={{
+              id: "2",
+              name: "Saia em couro",
+              price: 398,
+              parcelamento: [5, 30],
+              color: "Preto",
+              image: "/img/img_3.png",
+              size: ["G", "40"],
+              date: "1996-12-17"
+            }}
+          />
+          <ProductCard
+            product={{
+              id: "2",
+              name: "Saia em couro",
+              price: 398,
+              parcelamento: [5, 30],
+              color: "Preto",
+              image: "/img/img_3.png",
+              size: ["G", "40"],
+              date: "1996-12-17"
+            }}
+          />
+          <ProductCard
+            product={{
+              id: "2",
+              name: "Saia em couro",
+              price: 398,
+              parcelamento: [5, 30],
+              color: "Preto",
+              image: "/img/img_3.png",
+              size: ["G", "40"],
+              date: "1996-12-17"
+            }}
+          />
         </div>
       </div>
     </Base>
