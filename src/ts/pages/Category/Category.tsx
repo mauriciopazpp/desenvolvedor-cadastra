@@ -16,15 +16,13 @@ const Category: React.FC = () => {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [uniqueColors, setUniqueColors] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<string>('');
-
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
-
-  const sidebarElement = useRef<HTMLDivElement>(null);
-  const orderbarElement = useRef<HTMLDivElement>(null);
-
   const [page, setPage] = useState(1);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
+
+  const sidebarElement = useRef<HTMLDivElement>(null);
+  const orderbarElement = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
@@ -80,11 +78,9 @@ const Category: React.FC = () => {
         });
       } else if (orderFromURL === 'lowPrice') {
         items = items.sort((a, b) => a.price - b.price);
-        console.log(items)
       } else if (orderFromURL === 'highPrice') {
         items = items.sort((a, b) => b.price - a.price);
       }
-
 
       setFilteredProducts(items);
     }
@@ -165,7 +161,6 @@ const Category: React.FC = () => {
     }
   };
 
-
   const handleSortChange = (order: string) => {
     setSortOrder(order);
     const searchParams = new URLSearchParams(window.location.search);
@@ -176,6 +171,8 @@ const Category: React.FC = () => {
     }
     navigate(`?${searchParams.toString()}`);
   };
+
+  const visibleProducts = filteredProducts.slice(0, page * 9);
 
   return (
     <Base>
@@ -269,15 +266,15 @@ const Category: React.FC = () => {
         <div className="product-grid">
           <div className="product-list-page list-type-1">
             {loading ? 'loading...' :
-              (filteredProducts.length > 0
-                ? filteredProducts.map((product, index) => (
+              (visibleProducts.length > 0
+                ? visibleProducts.map((product, index) => (
                   <ProductCard key={index} product={product} />
                 ))
                 : 'Nenhum produto encontrado.')
             }
           </div>
           <div className="load-more">
-            {filteredProducts.length < totalCount && (
+            {visibleProducts.length < filteredProducts.length && (
               <Button label="Carregar mais" onClick={handleLoadMore} variant="secondary" />
             )}
           </div>
