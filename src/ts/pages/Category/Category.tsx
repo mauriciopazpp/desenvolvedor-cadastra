@@ -12,10 +12,10 @@ import { Product } from '../../Product';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Category: React.FC = () => {
-  const [isBrancoChecked, setIsBrancoChecked] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+  const [sortOrder, setSortOrder] = useState<string>('');
 
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
 
@@ -50,6 +50,7 @@ const Category: React.FC = () => {
     const colorsFromURL = params.get('colors')?.split(',') || [];
     const sizesFromURL = params.get('sizes')?.split(',') || [];
     const priceRangesFromURL = params.get('price')?.split(',') || [];
+    const orderFromURL = params.get('order') || '';
 
     setSelectedColors(colorsFromURL);
     setSelectedSizes(sizesFromURL);
@@ -70,6 +71,20 @@ const Category: React.FC = () => {
 
         return colorMatch && sizeMatch && priceMatch;
       });
+
+      if (orderFromURL === 'recent') {
+        items = items.sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateB - dateA;
+        });
+      } else if (orderFromURL === 'lowPrice') {
+        items = items.sort((a, b) => a.price - b.price);
+        console.log(items)
+      } else if (orderFromURL === 'highPrice') {
+        items = items.sort((a, b) => b.price - a.price);
+      }
+
 
       setFilteredProducts(items);
     }
@@ -150,12 +165,24 @@ const Category: React.FC = () => {
     }
   };
 
+
+  const handleSortChange = (order: string) => {
+    setSortOrder(order);
+    const searchParams = new URLSearchParams(window.location.search);
+    if (order) {
+      searchParams.set('order', order);
+    } else {
+      searchParams.delete('order');
+    }
+    navigate(`?${searchParams.toString()}`);
+  };
+
   return (
     <Base>
       <div className="category-title-section">
         <h2 className='category-title'>Blusas</h2>
         <div className="order">
-          <Dropdown />
+          <Dropdown handleSortChange={handleSortChange} sortOrder={sortOrder} />
           <div className='orderbar closed' ref={orderbarElement}>
             <div className="filter-box">
               <h2 className='filter-title'>ORDENAR</h2>
