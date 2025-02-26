@@ -16,26 +16,21 @@ const Category: React.FC = () => {
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(1);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { items: products, loading, error } = useSelector((state: RootState) => state.products);
+  const { items: products, loading, error, totalCount } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
-    dispatch(fetchProducts())
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (products.length > 0) {
-      console.log('Products', products);
-    }
-  }, [products]);
+    dispatch(fetchProducts(page));
+  }, [dispatch, page]);
 
   const handleSizeFilter = () => {
     console.log('Size filter.');
   };
 
   const handleLoadMore = () => {
-    console.log('Load more...');
+    setPage(prevPage => prevPage + 1);
   };
 
   const handleFilter = () => {
@@ -171,7 +166,9 @@ const Category: React.FC = () => {
             }
           </div>
           <div className="load-more">
-            <Button label="Carregar mais" onClick={handleLoadMore} variant="secondary" />
+            {products.length < totalCount && (
+              <Button label="Carregar mais" onClick={handleLoadMore} variant="secondary" />
+            )}
           </div>
         </div>
       </div>

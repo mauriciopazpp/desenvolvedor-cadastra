@@ -7,18 +7,28 @@ interface ProductsState {
   items: Product[];
   loading: boolean;
   error: string | null;
+  totalCount: number;
 }
 
 const initialState: ProductsState = {
   items: [],
   loading: false,
   error: null,
+  totalCount: 0,
 };
 
-export const fetchProducts = createAsyncThunk('products/fetch', async () => {
-  const response = await fetch(server);
-  return (await response.json()) as Product[];
-});
+export const fetchProducts = createAsyncThunk(
+  'products/fetch',
+  async (page: number) => {
+    const limit = 9;
+    const response = await fetch(server);
+    const products = await response.json();
+    const totalCount = products.length;
+    const paginatedProducts = products.slice((page - 1) * limit, page * limit);
+
+    return { paginatedProducts, totalCount };
+  }
+);
 
 const productsSlice = createSlice({
   name: 'products',
@@ -32,7 +42,13 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload;
+        const { paginatedProducts, totalCount } = action.payload;
+        state.totalCount = totalCount;
+        if (state.items.length === 0 || action.meta.arg === 1) {
+          state.items = paginatedProducts;
+        } else {
+          state.items = [...state.items, ...paginatedProducts];
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
