@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Base from '../../layouts/Base';
 import Checkbox from '../../components/Checkbox';
 import Button from '../../components/Button';
 import ProductCard from '../../components/ProductCard';
 import Accordion from '../../components/Accordion';
 import Dropdown from '../../components/Dropdown';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/productsSlice';
 import { RootState, AppDispatch } from '../../store/store';
@@ -17,13 +16,30 @@ const Category: React.FC = () => {
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(1);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [uniqueColors, setUniqueColors] = useState<string[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { items: products, loading, error, totalCount } = useSelector((state: RootState) => state.products);
+  const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts(page));
   }, [dispatch, page]);
+
+  useEffect(() => {
+    if (allProducts.length) {
+      const colors = Array.from(new Set(allProducts.flatMap(product => product.color))).sort();
+      setUniqueColors(colors);
+    }
+  }, [allProducts]);
+
+  const handleColorChange = (color: string) => {
+    setSelectedColors(prevColors =>
+      prevColors.includes(color)
+        ? prevColors.filter(c => c !== color)
+        : [...prevColors, color]
+    );
+  };
 
   const handleSizeFilter = () => {
     console.log('Size filter.');
@@ -90,24 +106,15 @@ const Category: React.FC = () => {
           <h6 className='heading-filter'></h6>
           <Accordion title="CORES">
             <div className="checkboxes">
-              <Checkbox
-                id="checkbox-1"
-                label="Amarelo"
-                checked={true}
-                onChange={setIsAmareloChecked}
-              />
-              <Checkbox
-                id="checkbox-2"
-                label="Azul"
-                checked={isAzulChecked}
-                onChange={setIsAzulChecked}
-              />
-              <Checkbox
-                id="checkbox-3"
-                label="Branco"
-                checked={isBrancoChecked}
-                onChange={setIsBrancoChecked}
-              />
+            {uniqueColors.map((color, index) => (
+                <Checkbox
+                  key={index}
+                  id={`checkbox-${index}`}
+                  label={color}
+                  checked={selectedColors.includes(color)}
+                  onChange={() => handleColorChange(color)}
+                />
+              ))}
             </div>
           </Accordion>
           <Accordion title="TAMANHOS">
