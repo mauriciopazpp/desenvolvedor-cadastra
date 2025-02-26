@@ -5,6 +5,10 @@ import Button from '../../components/Button';
 import ProductCard from '../../components/ProductCard';
 import Accordion from '../../components/Accordion';
 import Dropdown from '../../components/Dropdown';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../../store/productsSlice';
+import { RootState, AppDispatch } from '../../store/store';
 
 const Category: React.FC = () => {
   const [_, setIsAmareloChecked] = useState(false);
@@ -12,6 +16,19 @@ const Category: React.FC = () => {
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { items: products, loading, error } = useSelector((state: RootState) => state.products);
+
+  useEffect(() => {
+    dispatch(fetchProducts())
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      console.log('Products', products);
+    }
+  }, [products]);
 
   const handleSizeFilter = () => {
     console.log('Size filter.');
@@ -147,11 +164,11 @@ const Category: React.FC = () => {
         </div>
         <div className="product-grid">
           <div className="product-list-page list-type-1">
-            <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-            <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-            <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-            <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
-            <ProductCard name="Camisa Mescla" price="R$ 28,00" priceSplit='até 3x de R$ 9,33' />
+            {loading ? 'loading...' :
+              products.map((product, index) => (
+                <ProductCard key={index} product={product} />
+              ))
+            }
           </div>
           <div className="load-more">
             <Button label="Carregar mais" onClick={handleLoadMore} variant="secondary" />

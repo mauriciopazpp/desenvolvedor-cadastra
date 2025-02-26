@@ -1,3 +1,5 @@
+https://www.figma.com/design/Z5RCG3Ewzwm7XIPuhMUsBZ/Desafio-Cadastra?node-id=0-1&p=f&t=ddzWljjINhGg1bWg-0
+
 # Venha ser um desenvolvedor da Cadastra
 
 Olá! Somos a Cadastra, uma Next-Gen Company que oferece soluções globais em marketing, tecnologia, estratégia de negócios, commerce, dados e analytics. Este desafio é voltado para o nosso Centro de Excelência (COE) de Commerce, especializado em implantação, migração, evolução e otimização de e-commerce.  Contamos com escritórios em 5 países, mas num formato de trabalho 100% home office.
@@ -34,7 +36,7 @@ Estamos em busca de Pessoas Desenvolvedoras `Front-end`, com sólidos conhecimen
 - Atualize o readme com as instruções necessárias para rodar o seu código;
 - Adicione também seu e-mail de contato ao readme do projeto ( caso seu e-mail do github esteja privado )
 - envie para [vinicius.delfino@cadastra.com](mailto:vinicius.delfino@cadastra.com?subject=Vaga%20DEV%20-%20Cadastra) com cópia para [andresa.klein@cadastra.com](mailto:andresa.klein?subject=Vaga%20DEV%20-%20Cadastra)
- 
+
 
 **obs.**: link do projeto [github.com/Cadastra-Next-Gen-Company/desenvolvedor-cadastra](https://github.com/Cadastra-Next-Gen-Company/desenvolvedor-cadastra)
 
