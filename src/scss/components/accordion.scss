@@ -5,7 +5,6 @@
 
   .accordion-header {
     align-items: center;
-    cursor: pointer;
     transition: background-color 0.3s ease;
     display: flex;
     flex-direction: row;
@@ -27,6 +26,40 @@
   }
 
   .accordion-content {
-    padding: 10px;
+    &.open {
+      visibility: visible;
+      opacity: 1;
+      height: auto;
+    }
+  }
+}
+
+// Desktop
+@media (min-width: 768px) {
+  .accordion-header {
+    .arrow {
+      display: none;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: 768px) {
+  .accordion {
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .accordion-header {
+      cursor: pointer;
+    }
+
+    .accordion-content {
+      &.closed {
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+      }
+    }
   }
 }

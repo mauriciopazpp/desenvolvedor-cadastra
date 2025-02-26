@@ -9,7 +9,9 @@ interface BaseProps {
 const Base: React.FC<BaseProps> = ({ children }) => (
   <>
     <Header />
-    {children}
+    <div className="container">
+      {children}
+    </div>
     <Footer />
   </>
 );

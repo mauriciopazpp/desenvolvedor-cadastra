@@ -14,7 +14,9 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
         <h6 className='heading-filter'>{title}</h6>
         <span className={`arrow ${isOpen ? 'open' : ''}`}>▼</span>
       </div>
-      {isOpen && <div className="accordion-content">{children}</div>}
+      <div className={`accordion-content ${isOpen ? 'open' : 'closed'}`}>
+        {children}
+      </div>
     </div>
   );
 };

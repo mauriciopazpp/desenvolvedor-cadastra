@@ -2,7 +2,8 @@
 
 .sizes-filter {
   display: flex;
-  gap: 15px;
+  gap: 5px;
+  flex-flow: wrap;
 
   .square {
     width: 32px;
