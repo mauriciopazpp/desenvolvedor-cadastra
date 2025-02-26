@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from './Button';
 import { Product } from '../Product';
+import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
   product: Product;
@@ -19,9 +20,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div className='product-card'>
-      <img src={image} alt={name} />
+      <Link to="/">
+        <img src={image} alt={name} />
+      </Link>
       <div className="product-details">
-        <h6 className='product-name'>{name}</h6>
+        <Link to="/">
+          <h6 className='product-name'>{name}</h6>
+        </Link>
         <div className='product-price'>{formatCurrency(price)}</div>
         <div className='product-price-split'>
           até {parcelamento[0]}x de {formatCurrency(parcelamento[1])}

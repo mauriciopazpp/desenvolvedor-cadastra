@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Base from '../../layouts/Base';
-import Checkbox from '../../components/Checkbox';
 import Button from '../../components/Button';
 import ProductCard from '../../components/ProductCard';
-import Accordion from '../../components/Accordion';
-import Dropdown from '../../components/Dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/productsSlice';
 import { RootState, AppDispatch } from '../../store/store';
 import { Product } from '../../Product';
 import { useNavigate, useLocation } from 'react-router-dom';
+import OrderFilter from './FilterSections/OrderFilter';
+import SidebarFilter from './FilterSections/SidebarFilter';
 
 const Category: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -155,6 +154,9 @@ const Category: React.FC = () => {
   };
 
   const handleCleanFilters = () => {
+    setTempSelectedColors([]);
+    setTempSelectedSizes([]);
+    setTempSelectedPriceRanges([]);
     setSortOrder('');
     navigate('');
     handleClose();
@@ -172,6 +174,13 @@ const Category: React.FC = () => {
     }
   };
 
+  const handleOrderbarClose = () => {
+    if (orderbarElement.current) {
+      orderbarElement.current.classList.toggle('opened');
+      orderbarElement.current.classList.toggle('closed');
+    }
+  };
+
   const handleClose = () => {
     if (sidebarElement.current) {
       sidebarElement.current.classList.remove('opened');
@@ -180,13 +189,6 @@ const Category: React.FC = () => {
     if (orderbarElement.current) {
       orderbarElement.current.classList.remove('opened');
       orderbarElement.current.classList.add('closed');
-    }
-  };
-
-  const handleOrderbarClose = () => {
-    if (orderbarElement.current) {
-      orderbarElement.current.classList.remove('closed');
-      orderbarElement.current.classList.add('opened');
     }
   };
 
@@ -208,97 +210,32 @@ const Category: React.FC = () => {
     <Base>
       <div className="category-title-section">
         <h2 className='category-title'>Blusas</h2>
-        <div className="order">
-          <Dropdown handleSortChange={handleSortChange} sortOrder={sortOrder} />
-          <div className='orderbar closed' ref={orderbarElement}>
-            <div className="filter-box">
-              <h2 className='filter-title'>ORDENAR</h2>
-              <button className="close-btn" onClick={handleClose}>×</button>
-            </div>
-            <div className="order-menu">
-              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('recent')}>Mas recentes</a>
-              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('lowPrice')}>Menor preço</a>
-              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('highPrice')}>Maior preço</a>
-            </div>
-          </div>
-        </div>
+        <OrderFilter
+          handleSortChange={handleSortChange}
+          sortOrder={sortOrder}
+          handleClose={handleClose}
+          ref={orderbarElement}
+        />
       </div>
       <div className="product-list-page">
         <div className="sidebar-mobile-filter flex">
           <Button label="Filtrar" onClick={handleFilter} variant="terciary" />
           <Button label="Ordenar" onClick={handleOrderbarClose} variant="terciary" />
         </div>
-        <div className='sidebar closed' ref={sidebarElement}>
-          <div className="filter-box">
-            <h2 className='filter-title'>FILTRAR</h2>
-            <button className="close-btn" onClick={handleClose}>×</button>
-          </div>
-          <h6 className='heading-filter'></h6>
-          <Accordion title="CORES">
-            <div className="checkboxes">
-              {uniqueColors.map((color, index) => (
-                <Checkbox
-                  key={index}
-                  id={`checkbox-${index}`}
-                  label={color}
-                  checked={tempSelectedColors.includes(color)}
-                  onChange={() => handleColorChange(color)}
-                />
-              ))}
-            </div>
-          </Accordion>
-          <Accordion title="TAMANHOS">
-            <div className="flex sizes-filter">
-              {sizes.map((size, index) => (
-                <Button
-                  key={index}
-                  label={size}
-                  onClick={() => handleSizeFilter(size)}
-                  variant="terciary"
-                  extraClasses={`btn-no-border square ${tempSelectedSizes.includes(size) ? 'active' : ''}`}
-                />
-              ))}
-            </div>
-          </Accordion>
-          <Accordion title="FAIXA DE PREÇO">
-            <Checkbox
-              id="price-0-50"
-              label="0 a 50"
-              checked={tempSelectedPriceRanges.includes('0-50')}
-              onChange={() => handlePriceRangeChange('0-50')}
-            />
-            <Checkbox
-              id="price-51-150"
-              label="51 a 150"
-              checked={tempSelectedPriceRanges.includes('51-150')}
-              onChange={() => handlePriceRangeChange('51-150')}
-            />
-            <Checkbox
-              id="price-151-300"
-              label="151 a 300"
-              checked={tempSelectedPriceRanges.includes('151-300')}
-              onChange={() => handlePriceRangeChange('151-300')}
-            />
-            <Checkbox
-              id="price-301-500"
-              label="301 a 500"
-              checked={tempSelectedPriceRanges.includes('301-500')}
-              onChange={() => handlePriceRangeChange('301-500')}
-            />
-            <Checkbox
-              id="price-above-500"
-              label="Acima de 500"
-              checked={tempSelectedPriceRanges.includes('above-500')}
-              onChange={() => handlePriceRangeChange('above-500')}
-            />
-          </Accordion>
-          {isMobile && (
-            <div className="btn-group">
-              <Button label="APLICAR" onClick={handleApplyFilters} variant="secondary" extraClasses='btn-no-border' />
-              <Button label="LIMPAR" onClick={handleCleanFilters} variant="terciary" />
-            </div>
-          )}
-        </div>
+        <SidebarFilter
+          uniqueColors={uniqueColors}
+          sizes={sizes}
+          tempSelectedColors={tempSelectedColors}
+          tempSelectedSizes={tempSelectedSizes}
+          tempSelectedPriceRanges={tempSelectedPriceRanges}
+          handleColorChange={handleColorChange}
+          handleSizeFilter={handleSizeFilter}
+          handlePriceRangeChange={handlePriceRangeChange}
+          handleApplyFilters={handleApplyFilters}
+          handleCleanFilters={handleCleanFilters}
+          isMobile={isMobile}
+          ref={sidebarElement}
+        />
         <div className="product-grid">
           <div className="product-list-page list-type-1">
             {loading ? 'loading...' :
