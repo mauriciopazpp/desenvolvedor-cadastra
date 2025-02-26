@@ -9,19 +9,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/productsSlice';
 import { RootState, AppDispatch } from '../../store/store';
 import { Product } from '../../Product';
+import { useNavigate } from 'react-router-dom';
 
 const Category: React.FC = () => {
   const [isBrancoChecked, setIsBrancoChecked] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+
   const sidebarElement = useRef<HTMLDivElement>(null);
   const orderbarElement = useRef<HTMLDivElement>(null);
+
   const [page, setPage] = useState(1);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [uniqueColors, setUniqueColors] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
   const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProducts(page));
@@ -30,26 +36,32 @@ const Category: React.FC = () => {
   useEffect(() => {
     if (allProducts.length) {
       const colors = Array.from(new Set(allProducts.flatMap(product => product.color))).sort();
-      const sizes = Array.from(new Set(allProducts.flatMap(product => product.size))).sort();
+      const sizes = Array.from(new Set(allProducts.flatMap(product => product.size).flat())).sort();
       setUniqueColors(colors);
       setSizes(sizes);
 
-      if (selectedColors.length === 0) {
+      if (selectedColors.length === 0 && selectedSizes.length === 0) {
         setFilteredProducts(allProducts);
       } else {
-        const items = allProducts.filter(product =>
-          selectedColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase())
-        );
+        const items = allProducts.filter(product => {
+          const colorMatch = selectedColors.length === 0 || selectedColors.some(selectedColor => product.color.toLowerCase() === selectedColor.toLowerCase());
+          const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(selectedSize => {
+            return product.size.some(productSize => String(productSize).toLowerCase() === String(selectedSize).toLowerCase())
+          });
+          return colorMatch && sizeMatch;
+        });
         setFilteredProducts(items);
       }
     }
-  }, [allProducts, selectedColors]);
+  }, [allProducts, selectedColors, selectedSizes]);
 
   const handleColorChange = (color: string) => {
     const newColors = selectedColors.includes(color)
       ? selectedColors.filter(c => c !== color)
       : [...selectedColors, color];
     setSelectedColors(newColors);
+
+    navigate(`?colors=${newColors.join(',')}`);
 
     if (newColors.length === 0) {
       setFilteredProducts(allProducts);
@@ -61,14 +73,31 @@ const Category: React.FC = () => {
     }
   };
 
-  const handleSizeFilter = () => {
-    console.log('Size filter.');
+  const handleSizeFilter = (size: string) => {
+    const newSizes = selectedSizes.includes(size)
+      ? selectedSizes.filter(s => s !== size)
+      : [...selectedSizes, size];
+    setSelectedSizes(newSizes);
+
+    navigate(`?sizes=${newSizes.join(',')}`);
+
+    if (newSizes.length === 0) {
+      setFilteredProducts(allProducts);
+    } else {
+      const items = allProducts.filter(product =>
+        newSizes.some(selectedSize =>
+          product.size.some(productSize => String(productSize).toLowerCase() === String(selectedSize).toLowerCase())
+        )
+      );
+      setFilteredProducts(items);
+    }
   };
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
     dispatch(fetchProducts(page + 1));
   };
+
   const handleFilter = () => {
     if (sidebarElement.current) {
       sidebarElement.current.classList.toggle('opened');
@@ -85,14 +114,14 @@ const Category: React.FC = () => {
       orderbarElement.current.classList.remove('opened');
       orderbarElement.current.classList.add('closed');
     }
-  }
+  };
 
   const handleOrderbarClose = () => {
     if (orderbarElement.current) {
       orderbarElement.current.classList.remove('closed');
       orderbarElement.current.classList.add('opened');
     }
-  }
+  };
 
   return (
     <Base>
@@ -140,7 +169,13 @@ const Category: React.FC = () => {
           <Accordion title="TAMANHOS">
             <div className="flex sizes-filter">
               {sizes.map((size, index) => (
-                <Button key={index} label={size} onClick={handleSizeFilter} variant="terciary" extraClasses="square" />
+                <Button
+                  key={index}
+                  label={size}
+                  onClick={() => handleSizeFilter(size)}
+                  variant="terciary"
+                  extraClasses={`btn-no-border square ${selectedSizes.includes(size) ? 'active' : ''}`}
+                />
               ))}
             </div>
           </Accordion>
@@ -193,7 +228,6 @@ const Category: React.FC = () => {
             )}
           </div>
         </div>
-
       </div>
     </Base>
   );
