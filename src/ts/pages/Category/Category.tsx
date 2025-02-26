@@ -13,12 +13,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const Category: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [uniqueColors, setUniqueColors] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<string>('');
-  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([]);
   const [page, setPage] = useState(1);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [tempSelectedColors, setTempSelectedColors] = useState<string[]>([]);
@@ -29,7 +26,7 @@ const Category: React.FC = () => {
   const orderbarElement = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch<AppDispatch>();
-  const { items: products, loading, error, totalCount, allProducts } = useSelector((state: RootState) => state.products);
+  const { loading, allProducts } = useSelector((state: RootState) => state.products);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,10 +50,6 @@ const Category: React.FC = () => {
     const sizesFromURL = params.get('sizes')?.split(',') || [];
     const priceRangesFromURL = params.get('price')?.split(',') || [];
     const orderFromURL = params.get('order') || '';
-
-    setSelectedColors(colorsFromURL);
-    setSelectedSizes(sizesFromURL);
-    setSelectedPriceRanges(priceRangesFromURL);
 
     if (allProducts.length) {
       let items = allProducts.filter(product => {
@@ -162,9 +155,6 @@ const Category: React.FC = () => {
   };
 
   const handleCleanFilters = () => {
-    setSelectedColors([]);
-    setSelectedSizes([]);
-    setSelectedPriceRanges([]);
     setSortOrder('');
     navigate('');
     handleClose();
