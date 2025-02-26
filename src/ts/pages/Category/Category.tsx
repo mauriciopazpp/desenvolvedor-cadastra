@@ -170,6 +170,7 @@ const Category: React.FC = () => {
       searchParams.delete('order');
     }
     navigate(`?${searchParams.toString()}`);
+    handleClose()
   };
 
   const visibleProducts = filteredProducts.slice(0, page * 9);
@@ -186,9 +187,9 @@ const Category: React.FC = () => {
               <button className="close-btn" onClick={handleClose}>×</button>
             </div>
             <div className="order-menu">
-              <a className="order-item" href="#">Mas recentes</a>
-              <a className="order-item" href="#">Menor preço</a>
-              <a className="order-item" href="#">Maior preço</a>
+              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('recent')}>Mas recentes</a>
+              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('lowPrice')}>Menor preço</a>
+              <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('highPrice')}>Maior preço</a>
             </div>
           </div>
         </div>
