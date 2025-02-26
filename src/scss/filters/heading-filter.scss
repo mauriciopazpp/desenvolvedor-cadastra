@@ -5,7 +5,7 @@
 }
 
 // Desktop
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-md){
   .heading-filter {
     font-weight: $font-weight-normal;
     color: $color-headings;
@@ -15,7 +15,7 @@
 }
 
 // Mobile
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md){
   .heading-filter {
     font-weight: $font-weight-normal;
     color: $color-gray;

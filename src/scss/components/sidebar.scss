@@ -8,15 +8,15 @@
 }
 
 // Desktop
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-md){
   .filter-box,
   .sidebar-mobile-filter {
     display: none;
   }
 }
 
-// mobile
-@media (max-width: 768px) {
+// Mobile
+@media (max-width: $breakpoint-md){
   .sidebar {
     &.opened {
       position: absolute;
@@ -34,9 +34,19 @@
 
   .sidebar-mobile-filter {
     width: 100%;
+    height: 49px;
 
     > button {
       width: 50%;
+      font-size: $font-size-h4;
+      font-weight: $font-weight-normal;
+      height: 49px;
+      text-transform: capitalize;
+      color: $color-gray;
+
+      span {
+        color: $color-gray;
+      }
 
       &:first-child {
         border-right: 0;

@@ -1,14 +1,14 @@
 @use "theme" as *;
 
 // Desktop
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-md){
   .order-menu {
     display: none;
   }
 }
 
 // Mobile
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md){
   .order-menu {
     display: grid;
     padding: 20px;

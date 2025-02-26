@@ -12,7 +12,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, children }) => {
     <div className="accordion">
       <div className="accordion-header" onClick={() => setIsOpen(!isOpen)}>
         <h6 className='heading-filter'>{title}</h6>
-        <span className={`arrow ${isOpen ? 'open' : ''}`}>▼</span>
+        <span className={`arrow arrow-down ${isOpen ? 'open' : ''}`}></span>
       </div>
       <div className={`accordion-content ${isOpen ? 'open' : 'closed'}`}>
         {children}

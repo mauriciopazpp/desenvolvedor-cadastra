@@ -2,7 +2,7 @@
 
 .product-list-page {
   display: grid;
-  gap: 50px;
+  gap: 70px;
 
   &.list-type-1 {
     grid-template-columns: auto auto auto auto;
@@ -10,7 +10,7 @@
 }
 
 // Desktop
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-md){
   .product-list-page {
     grid-template-columns: 170px auto;
 
@@ -20,8 +20,8 @@
   }
 }
 
-// mobile
-@media (max-width: 768px) {
+// Mobile
+@media (max-width: $breakpoint-md){
   .product-list-page {
     grid-template-columns: 1fr;
 

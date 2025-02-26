@@ -1,3 +1,5 @@
+@use "theme" as *;
+
 .accordion {
   border-radius: 4px;
   margin-bottom: 10px;
@@ -19,6 +21,15 @@
       font-size: 14px;
       transition: transform 0.3s ease;
 
+      &.arrow-down {
+        background-image: url('/img/arrow.png');
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 16px;
+        height: 13px;
+      }
+
       &.open {
         transform: rotate(180deg);
       }
@@ -35,7 +46,7 @@
 }
 
 // Desktop
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-md){
   .accordion-header {
     .arrow {
       display: none;
@@ -44,7 +55,7 @@
 }
 
 // Mobile
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md){
   .accordion {
     padding-left: 20px;
     padding-right: 20px;

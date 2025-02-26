@@ -6,3 +6,10 @@
   padding-bottom: 50px;
   justify-content: center;
 }
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .load-more button {
+    border: none;
+  }
+}
