@@ -33,6 +33,13 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
   isMobile,
 }, ref) => {
   const [showAll, setShowAll] = useState(false);
+  const [openFilters, setOpenFilters] = useState<{ [key: string]: boolean }>({});
+
+  const handleFilterToggle = (filter: string, isOpen: boolean) => {
+    setOpenFilters((prev) => ({ ...prev, [filter]: isOpen }));
+  };
+
+  const isAnyFilterOpen = Object.values(openFilters).some(Boolean);
   const visibleColors = showAll ? uniqueColors : uniqueColors.slice(0, 5);
 
   return (
@@ -42,7 +49,8 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
         <button className="close-btn" onClick={onClose}>×</button>
       </div>
       <h6 className='heading-filter'></h6>
-      <Accordion title="CORES">
+
+      <Accordion title="CORES" onToggle={(isOpen) => handleFilterToggle('colors', isOpen)}>
         <div className="checkboxes">
           {visibleColors.map((color, index) => (
             <Checkbox
@@ -60,7 +68,8 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
           )}
         </div>
       </Accordion>
-      <Accordion title="TAMANHOS">
+
+      <Accordion title="TAMANHOS" onToggle={(isOpen) => handleFilterToggle('sizes', isOpen)}>
         <div className="flex sizes-filter">
           {sizes.map((size, index) => (
             <Button
@@ -73,7 +82,8 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
           ))}
         </div>
       </Accordion>
-      <Accordion title="FAIXA DE PREÇO">
+
+      <Accordion title="FAIXA DE PREÇO" onToggle={(isOpen) => handleFilterToggle('price', isOpen)}>
         <Checkbox
           id="price-0-50"
           label="0 a 50"
@@ -105,7 +115,8 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
           onChange={() => onPriceRangeChange('above-500')}
         />
       </Accordion>
-      {isMobile && (
+
+      {isMobile && isAnyFilterOpen && (
         <div className="btn-group">
           <Button label="APLICAR" onClick={onApplyFilters} variant="secondary" extraClasses='btn-no-border' />
           <Button label="LIMPAR" onClick={onCleanFilters} variant="terciary" />
