@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import Checkbox from '../../../components/Checkbox';
 import Button from '../../../components/Button';
 import Accordion from '../../../components/Accordion';
@@ -32,6 +32,9 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
   onClose,
   isMobile,
 }, ref) => {
+  const [showAll, setShowAll] = useState(false);
+  const visibleColors = showAll ? uniqueColors : uniqueColors.slice(0, 5);
+
   return (
     <div className='sidebar closed' ref={ref}>
       <div className="filter-box">
@@ -41,7 +44,7 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
       <h6 className='heading-filter'></h6>
       <Accordion title="CORES">
         <div className="checkboxes">
-          {uniqueColors.map((color, index) => (
+          {visibleColors.map((color, index) => (
             <Checkbox
               key={index}
               id={`checkbox-${index}`}
@@ -50,6 +53,11 @@ const SidebarFilter = forwardRef<HTMLDivElement, SidebarProps>(({
               onChange={() => onColorChange(color)}
             />
           ))}
+          {!showAll && uniqueColors.length > 5 && (
+            <button onClick={() => setShowAll(true)} className="link">
+              Ver todas as cores
+            </button>
+          )}
         </div>
       </Accordion>
       <Accordion title="TAMANHOS">

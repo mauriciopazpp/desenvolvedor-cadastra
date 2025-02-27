@@ -18,7 +18,7 @@ const Mockup: React.FC = () => {
     <Base>
       <div className="mockup-page">
         <br />
-        <h1>Mockup page elements</h1>
+        <h2>Mockup page elements</h2>
         <br />
         <h1>HEADINGS</h1>
         <h1>Heading 1</h1>
