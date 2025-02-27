@@ -1,9 +1,15 @@
 @use "../theme" as *;
 
 .sizes-filter {
-  display: flex;
-  gap: 5px;
-  flex-flow: wrap;
+  &:not(&.mockup) {
+    display: flex;
+    gap: 5px;
+    flex-flow: wrap;
+  }
+
+  &.mockup {
+    padding-bottom: 20px;
+  }
 
   .square {
     width: 32px;
