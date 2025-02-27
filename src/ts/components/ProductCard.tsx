@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className='product-card'>
       <Link to="/">
-        <img src={image} alt={name} />
+        <img src={`.${image}`} alt={name} />
       </Link>
       <div className="product-details">
         <Link to="/">

@@ -1,4 +1,4 @@
-@use "theme" as *;
+@use "../theme" as *;
 
 a {
   color: $color-link;
@@ -26,7 +26,7 @@ a {
     display: inline-block;
     width: 8px;
     height: 7px;
-    background-image: url('/img/arrow.png');
+    background-image: url('../img/arrow.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

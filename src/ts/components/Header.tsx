@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import logo from '../../img/cadastra.png';
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
@@ -8,7 +8,7 @@ const Header: React.FC<HeaderProps> = () => {
     <div className="main-header">
       <div className="container">
         <Link to="/">
-          <img src="img/cadastra.png" alt="Cadastra" width={165.82} />
+          <img src={logo} alt="Cadastra" width={165.82} />
         </Link>
       </div>
     </div>

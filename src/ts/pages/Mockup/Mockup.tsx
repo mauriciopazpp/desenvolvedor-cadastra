@@ -87,7 +87,7 @@ const Mockup: React.FC = () => {
         </div>
         <div>
           <br />
-          <div className="btn-group">
+          <div className="btn-group no-padding">
             <Button label="APLICAR" onClick={handleClick} variant="secondary" extraClasses='btn-no-border' />
             <Button label="LIMPAR" onClick={handleClick} variant="terciary" />
           </div>

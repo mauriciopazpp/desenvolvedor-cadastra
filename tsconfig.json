@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["dom", "es6"],
-    "strict": true
+    "strict": true,
+    "types": ["node", "./src/types"],
   },
   "include": ["src/**/*"]
 }

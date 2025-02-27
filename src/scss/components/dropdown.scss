@@ -1,4 +1,4 @@
-@use "theme" as *;
+@use "../theme" as *;
 
 $dropdown-height: 42px;
 
@@ -28,7 +28,7 @@ $dropdown-height: 42px;
       display: inline-block;
       width: 12px;
       height: 9px;
-      background-image: url('/img/arrow.png');
+      background-image: url('../img/arrow.png');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;

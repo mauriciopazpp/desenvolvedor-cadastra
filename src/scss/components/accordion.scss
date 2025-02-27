@@ -1,4 +1,4 @@
-@use "theme" as *;
+@use "../theme" as *;
 
 .accordion {
   border-radius: 4px;
@@ -22,7 +22,7 @@
       transition: transform 0.3s ease;
 
       &.arrow-down {
-        background-image: url('/img/arrow.png');
+        background-image: url('../img/arrow.png');
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;

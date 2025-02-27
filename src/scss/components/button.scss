@@ -1,5 +1,5 @@
 @use "sass:color";
-@use "theme" as *;
+@use "../theme" as *;
 
 $btn-height: 35px;
 $btn-padding: 40px;
@@ -54,9 +54,12 @@ $btn-padding: 40px;
 .btn-group {
   display: flex;
   justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 30px;
   gap: 15px;
+
+  &:not(.no-padding) {
+    padding-left: 20px;
+    padding-right: 30px;
+  }
 
   button {
     width: 100%;
