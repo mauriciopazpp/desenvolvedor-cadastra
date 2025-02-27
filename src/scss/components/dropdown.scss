@@ -59,6 +59,10 @@ $dropdown-height: 42px;
       text-decoration: none;
       transition: background-color 0.3s ease;
       font-size: 14px;
+      border: none;
+      width: 100%;
+      background: $color-white;
+      text-align: left;
 
       &:hover {
         background: $color-secondary;

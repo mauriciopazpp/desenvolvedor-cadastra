@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 
 interface DropdownProps {
-  handleSortChange: (sortType: string) => void;
+  onSortChange: (sortType: string) => void;
   sortOrder: string;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ handleSortChange, sortOrder }) => {
+const Dropdown: React.FC<DropdownProps> = ({ onSortChange, sortOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSort = (sortType: string) => {
-    handleSortChange(sortType);
+    onSortChange(sortType);
     setIsOpen(false);
   };
 
   const getSelectedOptionLabel = () => {
     switch (sortOrder) {
       case 'recent':
-        return 'Mas recentes';
+        return 'Mais recentes';
       case 'lowPrice':
         return 'Menor preço';
       case 'highPrice':
@@ -32,14 +32,37 @@ const Dropdown: React.FC<DropdownProps> = ({ handleSortChange, sortOrder }) => {
         className="dropdown-toggle"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
       >
         {getSelectedOptionLabel()}
       </button>
       {isOpen && (
-        <div className="dropdown-menu">
-          <a className="dropdown-item" href="javascript:void(0)" onClick={() => handleSort('recent')}>Mas recentes</a>
-          <a className="dropdown-item" href="javascript:void(0)" onClick={() => handleSort('lowPrice')}>Menor preço</a>
-          <a className="dropdown-item" href="javascript:void(0)" onClick={() => handleSort('highPrice')}>Maior preço</a>
+        <div className="dropdown-menu" role="menu">
+          <button
+            className="dropdown-item"
+            type="button"
+            onClick={() => handleSort('recent')}
+            role="menuitem"
+          >
+            Mais recentes
+          </button>
+          <button
+            className="dropdown-item"
+            type="button"
+            onClick={() => handleSort('lowPrice')}
+            role="menuitem"
+          >
+            Menor preço
+          </button>
+          <button
+            className="dropdown-item"
+            type="button"
+            onClick={() => handleSort('highPrice')}
+            role="menuitem"
+          >
+            Maior preço
+          </button>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from './Button';
-import { Product } from '../Product';
+import { Product } from '../pages/Category/Product/Product';
 import { Link } from 'react-router-dom';
 
 interface ProductCardProps {

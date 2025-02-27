@@ -2,24 +2,46 @@ import { forwardRef } from 'react';
 import Dropdown from '../../../components/Dropdown';
 
 interface OrderFilterProps {
-  handleSortChange: (order: string) => void;
   sortOrder: string;
-  handleClose: () => void;
+  onSortChange: (order: string) => void;
+  onClose: () => void;
 }
 
-const OrderFilter = forwardRef<HTMLDivElement, OrderFilterProps>(({ handleSortChange, sortOrder, handleClose }, ref) => {
+const OrderFilter = forwardRef<HTMLDivElement, OrderFilterProps>(({
+  onSortChange,
+  sortOrder,
+  onClose
+}, ref) => {
   return (
     <div className="order">
-      <Dropdown handleSortChange={handleSortChange} sortOrder={sortOrder} />
+      <Dropdown
+        sortOrder={sortOrder}
+        onSortChange={onSortChange}
+      />
       <div className='orderbar closed' ref={ref}>
         <div className="filter-box">
           <h2 className='filter-title'>ORDENAR</h2>
-          <button className="close-btn" onClick={handleClose}>×</button>
+          <button className="close-btn" onClick={onClose}>×</button>
         </div>
         <div className="order-menu">
-          <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('recent')}>Mais recentes</a>
-          <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('lowPrice')}>Menor preço</a>
-          <a className="order-item" href="javascript:void(0)" onClick={() => handleSortChange('highPrice')}>Maior preço</a>
+          <button
+            className="order-item"
+            onClick={() => onSortChange('recent')}
+          >
+            Mais recentes
+          </button>
+          <button
+            className="order-item"
+            onClick={() => onSortChange('lowPrice')}
+          >
+            Menor preço
+          </button>
+          <button
+            className="order-item"
+            onClick={() => onSortChange('highPrice')}
+          >
+            Maior preço
+          </button>
         </div>
       </div>
     </div>

@@ -19,6 +19,10 @@
       font-size: 22px;
       font-weight: $font-weight-normal;
       color: $color-black;
+      border: none;
+      width: 100%;
+      background: $color-white;
+      text-align: left;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Product } from '../Product';
+import { Product } from '../pages/Category/Product/Product';
 
 const server = 'http://localhost:5000/products';
 
