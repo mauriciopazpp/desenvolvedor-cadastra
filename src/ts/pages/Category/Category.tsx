@@ -52,25 +52,19 @@ const Category: React.FC = () => {
     handleCloseOrderbar();
   };
 
-  const handleFilter = () => {
-    sidebarElement.current?.classList.toggle('opened');
-    sidebarElement.current?.classList.toggle('closed');
-  };
+  const handleFilter = () => toggle(sidebarElement);
+  const handleOrderbarToggle = () => toggle(orderbarElement);
+  const handleCloseSidebar = () => toggle(sidebarElement);
+  const handleCloseOrderbar = () => toggle(orderbarElement);
 
-  const handleOrderbarToggle = () => {
-    orderbarElement.current?.classList.toggle('opened');
-    orderbarElement.current?.classList.toggle('closed');
-  };
-
-  const handleCloseSidebar = () => {
-    sidebarElement.current?.classList.remove('opened');
-    sidebarElement.current?.classList.add('closed');
-  };
-
-  const handleCloseOrderbar = () => {
-    orderbarElement.current?.classList.remove('opened');
-    orderbarElement.current?.classList.add('closed');
-  };
+  const toggle = (element: React.RefObject<HTMLElement>) => {
+    if (!element.current) {
+      return;
+    }
+    const isClosed = element.current.classList.contains('closed');
+    element.current.classList.toggle('opened', isClosed);
+    element.current.classList.toggle('closed', !isClosed);
+  }
 
   const handleApplyMobileFilters = () => {
     applyFilters(tempSelectedColors, tempSelectedSizes, tempSelectedPriceRanges);

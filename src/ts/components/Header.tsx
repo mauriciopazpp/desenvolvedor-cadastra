@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface HeaderProps {
-}
+interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   return (
