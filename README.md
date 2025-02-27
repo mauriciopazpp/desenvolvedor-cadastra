@@ -1,76 +1,64 @@
-# Venha ser um desenvolvedor da Cadastra
+# Desafio Desenvolvedor Cadastra
 
-Olá! Somos a Cadastra, uma Next-Gen Company que oferece soluções globais em marketing, tecnologia, estratégia de negócios, commerce, dados e analytics. Este desafio é voltado para o nosso Centro de Excelência (COE) de Commerce, especializado em implantação, migração, evolução e otimização de e-commerce.  Contamos com escritórios em 5 países, mas num formato de trabalho 100% home office.
+## Introdução
 
-Estamos em busca de Pessoas Desenvolvedoras `Front-end`, com sólidos conhecimentos em HTML, CSS e TS para projetar interfaces e entregar a melhor experiência para os consumidores visando sempre a otimização do código e agilidade no desenvolvimento.
+Este projeto foi desenvolvido como parte do desafio para a vaga de Desenvolvedor Front-end na Cadastra. Nele, demonstro habilidades avançadas em HTML5, CSS3 e Typescript, além de conhecimentos sólidos no consumo de APIs e na construção de interfaces responsivas e otimizadas com tecnologias robustas como o React. O projeto reflete a minha capacidade de organizar e estruturar um ambiente de desenvolvimento moderno, utilizando as melhores práticas de engenharia de software.
 
-## O que procuramos
+## Instalação
 
-### Requisitos Obrigatórios
+Certifique-se de ter o Node.js (versão 14 ou superior) instalado em sua máquina. Para instalar as dependências do projeto, execute:
 
-- Html5, css3;
-- Javascript/Typescript;
-- Consumo de APIs.
-- Versionamento Git;
-- Grunt/gulp;
-- Sass/less;
-- Nodejs
-- Sites responsivos;
-- Iniciativa, criatividade e colaboração;
-- Boas práticas: reutilização de código, semântica, organização, performance.
+```bash
+npm install
+```
+## Execução
 
-### Desejáveis:
+#### Ambiente de Desenvolvimento
 
-- Experiência com algum CMS
-- Conhecimento/Experiência em Vtex
-- Nodejs
+Para rodar o ambiente de desenvolvimento, use:
 
-----
+```bash
+npm run start
+```
 
-## Como se candidatar a vaga
+Nota:
 
-- [Crie um fork desse projeto;](https://github.com/Cadastra-Next-Gen-Company/desenvolvedor-cadastra/fork)
-- No seu fork, codifique o layout seguindo as instruções abaixo;
-- Atualize o readme com as instruções necessárias para rodar o seu código;
-- Adicione também seu e-mail de contato ao readme do projeto ( caso seu e-mail do github esteja privado )
-- envie para [vinicius.delfino@cadastra.com](mailto:vinicius.delfino@cadastra.com?subject=Vaga%20DEV%20-%20Cadastra) com cópia para [andresa.klein@cadastra.com](mailto:andresa.klein?subject=Vaga%20DEV%20-%20Cadastra)
- 
+Este comando inicia dois servidores:
+- Front-end: A aplicação roda na porta 3000 (acesse em http://localhost:3000).
+- API JSON: O servidor JSON é iniciado na porta 5000, disponibilizando os produtos em http://localhost:5000/products
 
-**obs.**: link do projeto [github.com/Cadastra-Next-Gen-Company/desenvolvedor-cadastra](https://github.com/Cadastra-Next-Gen-Company/desenvolvedor-cadastra)
+A API JSON simula um servidor de produtos para testar o consumo de dados pela aplicação.
 
-### Instruções para o teste
+#### Build Final
 
-O layout se encontra no [figma](https://www.figma.com/file/Z5RCG3Ewzwm7XIPuhMUsBZ/Desafio-Cadastra?type=design&node-id=0%3A1&mode=design&t=A0G2fRjMSrcQjchw-1).
+Para gerar o build final da aplicação, execute:
 
-### Dependências
+```bash
+npm run build
+```
 
-O projeto possui um setup pronto no qual há a necessidade de possuir o nodejs instalado na versão 14 ou superior.
+Este comando criará a pasta dist contendo os arquivos finais da aplicação. Para visualizar a loja com o build final, abra o arquivo index.html presente na pasta dist.
 
-Para instalar as dependências só é preciso executar o comando: `npm install`
+Atenção: É necessário que o servidor da API esteja rodando para buscar os produtos. Para isso, execute:
 
-O dar start no server e nos processos para desenvolvimento é necessário rodar o comando: `npm start `
+```bash
+npm run server
+```
 
-Uma ver que o comando é dado ele irá levantar 2 servidores, sendo eles:
- - um para acessar o front-end que roda na porta 3000. No qual pode ser acessado pela url: http://localhost:3000
- - um para o json-server que irá export uma api com a lista de produtos que roda na porta 5000. Para acessar os produtos é na url:  http://localhost:5000/products
+## Decisões e Considerações de Desenvolvimento
 
-### Objetivo
+##### Página de Mockup:
+Inicialmente, criei uma página de mockup para centralizar a criação de todos os componentes que seriam utilizados no projeto. Essa abordagem me permitiu ganhar tempo e reduzir o risco de modificar componentes já consolidados. Em um ambiente de produção real, essa página seria desativada (ou até removida), similar à estratégia que eu uso em sistemas como Adobe Commerce, onde eu geralmente incluo via script de deploy o codigo para desabilitar o modulo que cria a página de mockup.
 
-O objetivo desse desafio é avaliar a seus conhecimentos fundamentais de front end, por isso pedimos que não utilize nenhum framework, porem caso deseje utilizar frameworks como react, é possível adicionar ao setup.
-### Obrigatório
+##### Remoção do Gulp:
+Removi o Gulp do projeto devido à redundância de funcionalidades, uma vez que o Webpack já oferece todas as ferramentas necessárias para a construção e otimização dos assets. Essa decisão simplifica o fluxo de trabalho e resulta em uma build mais limpa e eficiente. O Webpack já oferece um conjunto robusto de ferramentas, como minificação de arquivos e live-reloading, que substituem a necessidade do Gulp.
 
-- HTML5 e CSS3
-- Typescript
-- Requisição a API para obter os produtos
-- Funcionalidade: Filtrar produtos por cor, tamanho e preço.
-- Funcionalidade: Adicionar produto ao carrinho.
-- Funcionalidade: Carregar mais produtos.
-- Não utilizar Bootstrap, Foundation Css, Semantic ui ou semelhantes ;
-- Responsividade
+##### Oportunidades de Melhoria:
+Embora existam diversas melhorias que poderiam ser implementadas — como a otimização de imagens via Webpack, a redução do tamanho do bundle JavaScript, e outras técnicas de performance — optei por manter o setup atual. Acredito que essas otimizações estão fora do escopo do desafio e da vaga, permitindo uma entrega mais focada e objetiva.
 
-#### Bônus
+### Contato
+- Nome: Mauricio Paz Pacheco
+- Email: mauriciopazdev@gmail.com
+- LinkedIn: linkedin.com/in/m-paz
+- Site: mauriciopazpp.github.io
 
-- Typescript com clean code
-- Adição de processo no gulp para otimizar imagens
-
-##### Dúvidas: [vinicius.delfino@cadastra.com](mailto:vinicius.delfino@cadastra.com?subject=Dúvida%20Vaga%20DEV%20-%20Cadastra)

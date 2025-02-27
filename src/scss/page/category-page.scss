@@ -1,0 +1,34 @@
+@use "../theme" as *;
+
+h2.category-title {
+  font-weight: $font-weight-normal;
+  font-size: $font-size-h2;
+}
+
+// Desktop
+@media (min-width: $breakpoint-md){
+  .category-title-section {
+    .category-title {
+      padding-top: 50px;
+    }
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .category-title-section {
+    .category-title {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .order .dropdown {
+      display: none;
+    }
+  }
+}

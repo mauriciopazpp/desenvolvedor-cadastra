@@ -1,0 +1,76 @@
+@use "../theme" as *;
+
+.accordion {
+  border-radius: 4px;
+  margin-bottom: 10px;
+  overflow: hidden;
+
+  .accordion-header {
+    align-items: center;
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+
+    h3 {
+      margin: 0;
+    }
+
+    .arrow {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+
+      &.arrow-down {
+        background-image: url('../img/arrow.png');
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 16px;
+        height: 13px;
+      }
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .accordion-content {
+    &.open {
+      visibility: visible;
+      opacity: 1;
+      height: auto;
+    }
+  }
+}
+
+// Desktop
+@media (min-width: $breakpoint-md){
+  .accordion-header {
+    .arrow {
+      display: none;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .accordion {
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .accordion-header {
+      cursor: pointer;
+    }
+
+    .accordion-content {
+      &.closed {
+        visibility: hidden;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+      }
+    }
+  }
+}

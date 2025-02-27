@@ -1,0 +1,24 @@
+@use "../theme" as *;
+
+.heading-filter {
+  font-family: $font-family-base;
+}
+
+// Desktop
+@media (min-width: $breakpoint-md){
+  .heading-filter {
+    font-weight: $font-weight-normal;
+    color: $color-headings;
+    margin-bottom: $margin-bottom-headings;
+    padding-top: 20px;
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .heading-filter {
+    font-weight: $font-weight-normal;
+    color: $color-gray;
+    font-size: $font-size-h4;
+  }
+}

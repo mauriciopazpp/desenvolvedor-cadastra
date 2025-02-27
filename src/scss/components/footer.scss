@@ -1,0 +1,17 @@
+@use "../theme" as *;
+
+.main-footer {
+  font-family: $font-family-base;
+  height: 33px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  background: $color-black;
+  color: $color-gray-2;
+  text-transform: uppercase;
+  margin-top: 10px;
+  bottom: 0;
+  width: 100%;
+  position: fixed;
+}

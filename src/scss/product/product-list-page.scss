@@ -1,0 +1,32 @@
+@use "../theme" as *;
+
+.product-list-page {
+  display: grid;
+  gap: 70px;
+
+  &.list-type-1 {
+    grid-template-columns: auto auto auto auto;
+  }
+}
+
+// Desktop
+@media (min-width: $breakpoint-md){
+  .product-list-page {
+    grid-template-columns: 170px auto;
+
+    &.list-type-1 {
+      grid-template-columns: auto auto auto;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .product-list-page {
+    grid-template-columns: 1fr;
+
+    &.list-type-1 {
+      grid-template-columns: auto auto;
+    }
+  }
+}

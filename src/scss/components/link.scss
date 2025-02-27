@@ -1,0 +1,37 @@
+@use "../theme" as *;
+
+a {
+  color: $color-link;
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.link {
+  background-color: transparent;
+  font-size: $font-size-base-smaller;
+  color: $color-gray;
+  text-decoration: underline;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 7px;
+    background-image: url('../img/arrow.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    bottom: 0;
+    margin-left: 3px;
+  }
+}

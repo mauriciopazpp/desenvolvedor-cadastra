@@ -1,0 +1,15 @@
+@use "../theme" as *;
+
+.load-more {
+  display: flex;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  justify-content: center;
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .load-more button {
+    border: none;
+  }
+}

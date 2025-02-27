@@ -1,1 +1,25 @@
-@import "reset";
+@use "reset";
+@use "theme";
+@use "typography";
+@use "container";
+@use "default";
+
+@use "components/header";
+@use "components/footer";
+@use "components/button";
+@use "components/link";
+@use "components/checkbox";
+@use "components/dropdown";
+@use "components/accordion";
+@use "components/sidebar";
+@use "components/orderbar";
+@use "components/load-more";
+@use "components/order";
+
+@use "filters/heading-filter";
+@use "filters/sizes-filter";
+
+@use "product/product-list-page";
+@use "product/product-card";
+
+@use "page/category-page"

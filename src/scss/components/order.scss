@@ -1,0 +1,28 @@
+@use "../theme" as *;
+
+// Desktop
+@media (min-width: $breakpoint-md){
+  .order-menu {
+    display: none;
+  }
+}
+
+// Mobile
+@media (max-width: $breakpoint-md){
+  .order-menu {
+    display: grid;
+    padding: 20px;
+    gap: 20px;
+
+    .order-item {
+      font-family: $font-family-base;
+      font-size: 22px;
+      font-weight: $font-weight-normal;
+      color: $color-black;
+      border: none;
+      width: 100%;
+      background: $color-white;
+      text-align: left;
+    }
+  }
+}
